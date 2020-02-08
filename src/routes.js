@@ -1,21 +1,16 @@
 const express = require('express')
+const UserController = require('./controllers/UserController');
 const routes = express.Router()
 
 // Users
-routes.get('/api/v1/users', (req, res) => {
+routes.post('/api/v1/users', UserController.store);
+
+// Transactions
+routes.get('/api/v1/transactions/', (req, res) => {
   res.send({
-    "user" : "Fulano de tal",
-    "idade" : 40
+    "transactionDate" : "2020-12-3 9:30:22",
+    "amountTransfered" : "20000"
   });
 })
-
-// Transfers
-routes.get('/api/v1/transfers/:idClient', (req, res) => {
-  res.send({
-    "user": "Fulano de tal",
-    "idade": 40
-  });
-})
-
 
 module.exports = routes;
