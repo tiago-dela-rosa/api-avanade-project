@@ -6,6 +6,12 @@ module.exports = {
 
     const { cpf, email, balance, account_number } = req.body;
 
+    // Se ja existir usuario com esse cpf
+    const userExist = await UserModel.findOne({ cpf: cpf })
+    if(userExist) {
+      return userExist;
+    }
+
     const userRegistred = UserModel.Create({
       cpf,
       email,
