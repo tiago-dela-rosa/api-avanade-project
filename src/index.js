@@ -15,12 +15,14 @@ app.use(routes)
 
 // Connect to DB
 mongoose.connect(
-  process.env.DB_CONNECT,
-  { useNewUrlParser : true },
-  () => {
-    return console.log('conectado!')
-  }
-)
+  'mongodb://localhost:27017/bitbank', {
+   useNewUrlParser : true ,
+   useUnifiedTopology: true,
+  }).then(() => console.log('conectado'))
+    .catch(err => {
+    console.log('Erro na conexão ao banco de dados : ' + err.message);
+  });
+     
 
 
 // Router middleware
