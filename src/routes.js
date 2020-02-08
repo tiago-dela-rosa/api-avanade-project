@@ -1,9 +1,9 @@
 const express = require('express')
-const UserController = require('./controllers/UserController');
+//const UserController = require('./controllers/UserController');
 const routes = express.Router()
 
 // Users
-routes.post('/api/v1/users', UserController.store);
+//routes.post('/api/v1/users', UserController.store);
 
 // Transactions
 routes.get('/api/v1/transactions/', (req, res) => {

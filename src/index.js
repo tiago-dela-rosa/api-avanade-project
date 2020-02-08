@@ -15,7 +15,7 @@ app.use(routes)
 
 // Connect to DB
 mongoose.connect(
-  'mongodb://localhost:27017/bitbank', {
+  process.env.DB_CONNECT, {
    useNewUrlParser : true ,
    useUnifiedTopology: true,
   }).then(() => console.log('conectado'))
