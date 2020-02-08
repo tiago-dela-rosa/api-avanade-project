@@ -7,7 +7,7 @@ let generateObjectId = function () {
   return new ObjectId;
 }
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   cpf: {
     type: String,
     unique: true,
@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
                       required: true,
                     },
                     transactionDate: {
-                      type: Date,
+                      type: Date.now,
                       required: true,
                     },
                     cpfUser: {
@@ -61,4 +61,4 @@ const userSchema = new mongoose.Schema({
   ]
 });
 
-module.exports('User', userSchema);
+module.exports('User', UserSchema);
