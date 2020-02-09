@@ -1,29 +1,29 @@
-const UserSchema = require("../models/User");
+const User = require("../models/User");
 
 module.exports = {
 
-  store(req, res) {
+  async store(req, res) {
 
     const { fullname, cpf, email, password, balance, accountNumber } = req.body;
 
-    console.log(req.body)
+    const userExist = await User.findOne({ cpf: cpf })
 
-    // // Se ja existir usuario com esse cpf
-    //const userExist = UserSchema.findOne({ cpf: req.body.cpf })
-    
-    // if(userExist) {
-    //   return userExist;
-    // }
+    if(userExist)
+      return res.status(409).json({ error: "User already exist"});
 
-    const userRegistred = UserSchema.Create({
-      fullname: req.body.fullname,
-      cpf: req.body.cpf,
-      email: req.body.email,
-      password: req.body.password,
-      balance: req.body.balance,
-      accountNumber: req.body.accountNumber
+
+    const userRegistred = await User.create({
+      fullname: fullname,
+      cpf: cpf,
+      email: email,
+      password: password,
+      balance: balance,
+      accountNumber: accountNumber
     });
 
-    return res.send(userRegistred);
+    return res.status(200).send({
+      message: "User successfully registered",
+      user: userRegistred 
+    });
   }
 }
