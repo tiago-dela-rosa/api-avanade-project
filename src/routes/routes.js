@@ -1,6 +1,8 @@
-const express = require('express')
+const express = require('express');
 //const UserController = require('./controllers/UserController');
-const routes = express.Router()
+const routes = express.Router();
+var validator = require('validator');
+
 
 // Login
 routes.get('/api/login', (req, res) => {
@@ -14,12 +16,19 @@ routes.post('/api/register', (req, res) => {
    const balance = 0.00;
    const accountNumber = "945801-1";
 
+
+
    // Check para verificar se todos os campos foram preenchidos
    if(!cpf || !password || !fullName || !email) {
      res.status(400).send({msg : 'Por favor preencha todos os campos.'});
      return false;
    }
 
+   // Check do email
+   if (!validator.isEmail(email)) {
+    res.status(400).send({msg : 'Preencha um email válido.'});
+   }
+   
   console.log(req.body);
   res.send('chegou aqui');
 });
