@@ -2,6 +2,7 @@ const express = require('express');
 //const UserController = require('./controllers/UserController');
 const routes = express.Router();
 var validator = require('validator');
+const { cpf } = require('cpf-cnpj-validator');
 
 
 // Login
@@ -11,7 +12,9 @@ routes.get('/api/login', (req, res) => {
 
 // Cadastrar
 routes.post('/api/register', (req, res) => {
-   const { cpf, password, fullName, email } = req.body;
+   const { password, fullName, email } = req.body;
+
+   const cpfReq = req.body.cpf;
 
    const balance = 0.00;
    const accountNumber = "945801-1";
@@ -19,9 +22,14 @@ routes.post('/api/register', (req, res) => {
 
 
    // Check para verificar se todos os campos foram preenchidos
-   if(!cpf || !password || !fullName || !email) {
+   if(!cpfReq || !password || !fullName || !email) {
      res.status(400).send({msg : 'Por favor preencha todos os campos.'});
      return false;
+   }
+
+   //Check de CPF
+   if (!cpf.isValid(cpfReq)) {
+    res.status(400).send({msg : 'Por favor preencha um CPF válido.'});
    }
 
    // Check do email
