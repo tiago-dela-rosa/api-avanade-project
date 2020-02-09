@@ -5,10 +5,16 @@ var validator = require("validator");
 const { cpf } = require("cpf-cnpj-validator");
 const User = require("../database/models/User");
 const bcrypt = require("bcrypt");
+const passport = require("passport");
+
+// Passport config
+require("../config/passport")(passport);
+
+console.log(passport);
 
 // Login
-routes.get("/api/login", (req, res) => {
-  res.send("chegou aqui");
+routes.post("/login", passport.authenticate("local"), function(req, res) {
+  res.status(200).send({ msg: "Logado com sucesso" });
 });
 
 // Cadastrar
@@ -63,7 +69,6 @@ routes.post("/api/register", (req, res) => {
             newUser
               .save()
               .then(user => {
-                console.log("chegou aqui");
                 res
                   .status(200)
                   .send({ msg: "Usuário cadastrado com sucesso." });
