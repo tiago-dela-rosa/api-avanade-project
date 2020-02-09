@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 //Carregar model de usuario
-const User = require("../database/models/User");
+const User = require("../models/User");
 
 module.exports = function(passport) {
   passport.use(

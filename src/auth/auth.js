@@ -1,7 +1,7 @@
 const passport = require("passport");
 const JWTstrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
-const User = require("../database/models/User");
+const User = require("../models/User");
 
 //Verificar se o token do usuario é valido
 passport.use(
