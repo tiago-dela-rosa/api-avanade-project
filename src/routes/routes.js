@@ -3,6 +3,7 @@ const express = require('express');
 const routes = express.Router();
 var validator = require('validator');
 const { cpf } = require('cpf-cnpj-validator');
+const User = require("../database/models/User");
 
 
 // Login
@@ -19,8 +20,6 @@ routes.post('/api/register', (req, res) => {
    const balance = 0.00;
    const accountNumber = "945801-1";
 
-
-
    // Check para verificar se todos os campos foram preenchidos
    if(!cpfReq || !password || !fullName || !email) {
      res.status(400).send({msg : 'Por favor preencha todos os campos.'});
@@ -36,17 +35,22 @@ routes.post('/api/register', (req, res) => {
    if (!validator.isEmail(email)) {
     res.status(400).send({msg : 'Preencha um email válido.'});
    }
-   
-  console.log(req.body);
-  res.send('chegou aqui');
+
+
+  // Verificar se usuario existe no banco
+  User.findOne({"cpf" : cpfReq}).
+    then(user => {
+      if (user) {
+        res.status(400).send({msg : 'Usuário já cadastrado com esse CPF'});
+        console.log('aqui');
+      } else {
+        console.log("novo usuario");
+      }
+    })
+    .catch(error => console.log(error));
+
 });
 
-// Transactions
-routes.get('/api/v1/transactions/', (req, res) => {
-  res.send({
-    "transactionDate" : "2020-12-3 9:30:22",
-    "amountTransfered" : "20000"
-  });
-})
+
 
 module.exports = routes;

@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true,
     get: formatToPrice.getPrice,
-    set: setPrice.setPrice  
+    set: formatToPrice.setPrice  
   },
   numberAccount: {
     type: String,
@@ -44,7 +44,10 @@ const UserSchema = new mongoose.Schema({
                       required: true,
                     },
                     transactionDate: {
-                      type: Date.now,
+                      type: Date,
+                      default: function() { 
+                        return Date.now() 
+                      },
                       required: true,
                     },
                     cpfUser: {
@@ -54,11 +57,13 @@ const UserSchema = new mongoose.Schema({
                     amountTransferred: {
                       type: Number,
                       required:true,
-                      get: getPrice,
-                      set: setPrice  
+                      get: formatToPrice.getPrice,
+                      set: formatToPrice.setPrice  
                     }
                   }
   ]
 });
 
-module.exports('User', UserSchema);
+const User = mongoose.model('User', UserSchema, "UserSchema");
+
+module.exports = User;
