@@ -1,8 +1,8 @@
 module.exports = {
-    getPrice = function (num) {
+    getPrice : function (num) {
         return (num/100).toFixed(2);
     },
-    setPrice = function (num) {
+    setPrice : function (num) {
         return num*100;
     }
 }     
