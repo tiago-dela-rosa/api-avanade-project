@@ -6,15 +6,35 @@ const { cpf } = require("cpf-cnpj-validator");
 const User = require("../database/models/User");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
+const jwt = require("jsonwebtoken");
 
 // Passport config
 require("../config/passport")(passport);
 
-console.log(passport);
-
 // Login
-routes.post("/login", passport.authenticate("local"), function(req, res) {
-  res.status(200).send({ msg: "Logado com sucesso" });
+routes.post("/api/login", passport.authenticate("local"), function(
+  req,
+  res,
+  next
+) {
+  passport.authenticate("local", async (err, user, info) => {
+    try {
+      if (err || !user) {
+        const error = new Error("An Error occurred");
+        return next(error);
+      }
+      req.login(user, { session: false }, async error => {
+        if (error) return next(error);
+        //salva id e email no token
+        const body = { _id: user._id, email: user.email };
+        const token = jwt.sign({ user: body }, "top_secret");
+        //Manda o token, id e email de volta na resposta
+        return res.json({ token, body });
+      });
+    } catch (error) {
+      return next(error);
+    }
+  })(req, res, next);
 });
 
 // Cadastrar

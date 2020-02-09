@@ -6,6 +6,9 @@ const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
+//Autenticacao com JWT
+require("./auth/auth");
+
 // Passport config
 require("./config/passport")(passport);
 
@@ -30,6 +33,9 @@ app.use(passport.session());
 // Rotas
 const routes = require("./routes/routes");
 app.use("/", routes);
+
+const secureRoute = require("./routes/secure-routes");
+app.use("/user", passport.authenticate("jwt", { session: false }), secureRoute);
 
 // Conectar ao banco
 const dotenv = require("dotenv");
