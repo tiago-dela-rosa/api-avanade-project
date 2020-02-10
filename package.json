@@ -4,7 +4,7 @@
   "description": "API para o projeto proposto pela Avanade.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "nodemon babel-node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -18,11 +18,26 @@
   },
   "homepage": "https://github.com/tiago-dela-rosa/api-avanade-project#readme",
   "dependencies": {
+    "@hapi/joi": "^17.1.0",
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "cpf-cnpj-validator": "^0.1.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
     "joi": "^14.3.1",
-    "mongoose": "^5.8.11"
+    "express-session": "^1.17.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.8.11",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "validator": "^12.2.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/node": "^7.8.4",
+    "@babel/preset-env": "^7.8.4"
   }
 }
