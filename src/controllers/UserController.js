@@ -1,3 +1,4 @@
+const { check, validationResult } = require('express-validator');
 const User = require("../models/User");
 
 module.exports = {
@@ -10,7 +11,6 @@ module.exports = {
 
     if(userExist)
       return res.status(409).json({ error: "User already exist"});
-
 
     const userRegistred = await User.create({
       fullname: fullname,
