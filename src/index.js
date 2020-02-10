@@ -5,11 +5,12 @@ const app = express();
 const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const bcrypt = require('bcrypt');
 
 //Autenticacao com JWT
 require("./auth/auth");
 
-dotenv.config()
+
 // Passport config
 require("./config/passport")(passport);
 
@@ -51,10 +52,5 @@ mongoose
   .catch(err => {
     console.log("Erro na conexão ao banco de dados : " + err.message);
   });
-     
-
-
-// Router middleware
-//app.use('/api/v1/user', authRoute)
 
 app.listen(3000)
