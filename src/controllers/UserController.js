@@ -15,7 +15,7 @@ module.exports = {
     const cpfReq = req.body.cpf;
 
     const balance = 0.0;
-    const numberAccount = "945801-3";
+    const numberAccount = "157953-3";
 
     // Check para verificar se todos os campos foram preenchidos
     if (!cpfReq || !password || !fullName || !email) {

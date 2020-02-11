@@ -1,6 +1,8 @@
 const express = require("express");
-
 const router = express.Router();
+const TransactionsController = require("../controllers/TransactionsController");
+
+// Esperase que todas as rotas estejem dentro de /user 
 
 //Rota so pode ser acessa apos a autenticacao do token
 router.get("/profile", (req, res, next) => {
@@ -13,5 +15,6 @@ router.get("/profile", (req, res, next) => {
 });
 
 // Transactions
+router.post("/:userId/transactions", TransactionsController.store)
 
 module.exports = router;
