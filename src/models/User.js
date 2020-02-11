@@ -1,5 +1,4 @@
 const formatToPrice = require("./utils/formatToPrice");
-
 const mongoose = require("mongoose");
 
 let generateObjectId = function() {
