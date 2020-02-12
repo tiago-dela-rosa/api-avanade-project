@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const TransactionsController = require("../controllers/TransactionsController");
-const SearchController = require("../controllers/SearchController")
+const SearchController = require("../controllers/SearchController");
 
-// Esperase que todas as rotas estejem dentro de /user 
+// Esperase que todas as rotas estejem dentro de /user
 
 //Rota so pode ser acessa apos a autenticacao do token
 router.get("/profile", (req, res, next) => {
@@ -16,10 +16,10 @@ router.get("/profile", (req, res, next) => {
 });
 
 // Transactions
-router.post("/:userId/transactions", TransactionsController.store)
-router.get("/:userId/transactions", TransactionsController.getTransactions)
+router.post("/:userId/transactions", TransactionsController.store);
+router.get("/:userId/transactions", TransactionsController.getTransactions);
 
 // Seach
-router.get("/search", SearchController.search)
+router.get("/search", SearchController.search);
 
 module.exports = router;
