@@ -9,13 +9,22 @@ const passport = require("passport");
 require("../config/passport").localPassport(passport);
 
 module.exports = {
-  register(req, res) {
+   async register(req, res) {
     const { password, fullName, email } = req.body;
 
     const cpfReq = req.body.cpf;
 
     const balance = 0.0;
-    const numberAccount = "157953-3";
+    let numberAccount = generateAccountNumber();
+
+    let numberAccountExists = await checkIfNumberAccountExists(numberAccount);
+
+    if (numberAccountExists) {
+      numberAccount = numberAccountExists;
+    }
+
+    console.log(numberAccountExists);
+    console.log(numberAccount);
 
     // Check para verificar se todos os campos foram preenchidos
     if (!cpfReq || !password || !fullName || !email) {
@@ -93,3 +102,27 @@ module.exports = {
     })(req, res, next);
   }
 };
+
+function generateAccountNumber() {
+
+  let generateRandomNumber = Math.floor(Math.random() * 10000000).toString();
+  let insertChar = generateRandomNumber.substring(0, 6) + "-" + generateRandomNumber.substring(6);
+
+  return insertChar;
+}
+
+async function checkIfNumberAccountExists(numberAccount) {
+  try {
+    let numberExists = await User.findOne({ numberAccount });
+
+    if (numberExists) {
+    return generateAccountNumber();
+   } else {
+     return false;
+   }
+  } catch (error) {
+   console.log(error); 
+  }
+   
+}
+
