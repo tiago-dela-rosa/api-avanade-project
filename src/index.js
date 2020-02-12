@@ -5,7 +5,7 @@ const app = express();
 const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 //Autenticacao com JWT
 require("./config/passport").JWTPassport();
@@ -52,4 +52,4 @@ mongoose
     console.log("Erro na conexão ao banco de dados : " + err.message);
   });
 
-app.listen(3000)
+app.listen(3000);

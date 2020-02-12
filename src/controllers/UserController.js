@@ -4,27 +4,20 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
+const { checkIfNumberAccountExists } = require("./utils/accountNumber");
 
 // Passport config
 require("../config/passport").localPassport(passport);
 
 module.exports = {
-   async register(req, res) {
+  async register(req, res) {
     const { password, fullName, email } = req.body;
 
     const cpfReq = req.body.cpf;
 
     const balance = 0.0;
-    let numberAccount = generateAccountNumber();
 
-    let numberAccountExists = await checkIfNumberAccountExists(numberAccount);
-
-    if (numberAccountExists) {
-      numberAccount = numberAccountExists;
-    }
-
-    console.log(numberAccountExists);
-    console.log(numberAccount);
+    let numberAccount = await checkIfNumberAccountExists();
 
     // Check para verificar se todos os campos foram preenchidos
     if (!cpfReq || !password || !fullName || !email) {
@@ -103,26 +96,28 @@ module.exports = {
   }
 };
 
-function generateAccountNumber() {
+// function generateAccountNumber() {
+//   let generateRandomNumber = Math.floor(Math.random() * 10000000).toString();
+//   let insertChar =
+//     generateRandomNumber.substring(0, 6) +
+//     "-" +
+//     generateRandomNumber.substring(6);
 
-  let generateRandomNumber = Math.floor(Math.random() * 10000000).toString();
-  let insertChar = generateRandomNumber.substring(0, 6) + "-" + generateRandomNumber.substring(6);
+//   return insertChar;
+// }
 
-  return insertChar;
-}
+// async function checkIfNumberAccountExists(numberAccount) {
+//   try {
+//     let numberExists = await User.findOne({ numberAccount });
 
-async function checkIfNumberAccountExists(numberAccount) {
-  try {
-    let numberExists = await User.findOne({ numberAccount });
+//     if (numberExists) {
+//       let generateAccountNumber = generateAccountNumber();
 
-    if (numberExists) {
-    return generateAccountNumber();
-   } else {
-     return false;
-   }
-  } catch (error) {
-   console.log(error); 
-  }
-   
-}
-
+//       checkIfNumberAccountExists(generateAccountNumber);
+//     } else {
+//       return numberExists;
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
