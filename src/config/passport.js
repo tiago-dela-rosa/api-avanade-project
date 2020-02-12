@@ -1,11 +1,15 @@
 const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const passport = require("passport");
+const JWTstrategy = require("passport-jwt").Strategy;
+const ExtractJWT = require("passport-jwt").ExtractJwt;
 
 //Carregar model de usuario
 const User = require("../models/User");
 
-module.exports = function(passport) {
+module.exports = { 
+  localPassport : function(passport) {
   passport.use(
     new LocalStrategy({ usernameField: "cpf" }, (cpf, password, done) => {
       User.findOne({ cpf: cpf }).then(user => {
@@ -36,4 +40,30 @@ module.exports = function(passport) {
       done(err, user);
     });
   });
-};
+  },
+
+  JWTPassport : function() { passport.use(
+    new JWTstrategy(
+      {
+        secretOrKey: "top_secret",
+        //Token deve ser passado como Bearer
+        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
+      },
+      (payload, done) => {
+        User.findOne(payload._id)
+          .then(user => {
+            if (user) {
+              return done(null, {
+                id: user._id,
+                email: user.email
+              });
+            }
+            return done(null, false);
+          })
+          .catch(error => done(error, null));
+      }
+    )
+  );
+  
+  }
+};    

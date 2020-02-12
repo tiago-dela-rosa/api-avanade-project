@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 
 // Passport config
-require("../config/passport")(passport);
+require("../config/passport").localPassport(passport);
 
 module.exports = {
   register(req, res) {
@@ -15,7 +15,7 @@ module.exports = {
     const cpfReq = req.body.cpf;
 
     const balance = 0.0;
-    const numberAccount = "945801-3";
+    const numberAccount = "945801-4";
 
     // Check para verificar se todos os campos foram preenchidos
     if (!cpfReq || !password || !fullName || !email) {

@@ -4,7 +4,7 @@ const routes = express.Router();
 const passport = require("passport");
 
 // Passport config
-require("../config/passport")(passport);
+require("../config/passport").localPassport(passport);
 
 // Login
 routes.post("/api/login", passport.authenticate("local"), UserController.login);
