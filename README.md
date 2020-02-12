@@ -23,7 +23,7 @@ Esta é a estrutura do Model de usuários (UserSchema).
 
 ## Estrutura
 
-```javascript
+```js
 {
     "_id": "<ID único aleatório>",
     "cpf": "<Número de CPF do usuário>",
@@ -52,19 +52,21 @@ Aqui estão os usuários do banco.
 
 | Método  | Estrutura  | Ação | Parâmetros | Retorno |
 | -------- | -------- | -------- | -------- | -------- |
-| POST | '/api/register' | Cadastra um usuário no banco de dados | JSON/email, password, fullName, cpf | JSON/mensagem: Usuário cadastrado com sucesso. |
-| POST | '/api/login' | Inicia a sessão do usuário | JSON/cpf, password | JSON/token de autenticação. |
+| POST | `/api/register` | Cadastra um usuário no banco de dados | JSON/email, password, fullName, cpf | JSON/mensagem: Usuário cadastrado com sucesso. |
+| POST | `/api/login` | Inicia a sessão do usuário | JSON/cpf, password | JSON/token de autenticação. |
 
 # Exemplos
 
 ## Register
 
-``` ***POST /api/register*** ```
+ ```http
+  POST /api/register 
+ ```
 
 <details>
-<summary>'HTTP/1.1 200 OK'</summary>
+<summary><code>HTTP/1.1 200 OK</code></summary>
 <br>
-```javascript
+```json
 {
   "msg": "Usuário cadastrado com sucesso."
 }
@@ -73,12 +75,14 @@ Aqui estão os usuários do banco.
 
 ## Login
 
-``` ***POST /api/login*** ```
+ ```http 
+ POST /api/login
+ ```
 
 <details>
-<summary>'HTTP/1.1 200 OK'</summary>
+<summary><code>HTTP/1.1 200 OK'</code></summary>
 <br>
-```javascript
+```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVlNDMxYTY3Zjc3OTNiMjQyODc4MzdiZiIsImVtYWlsIjoidGVzdGVAdGVzdGUuY29tLmJyIn0sImlhdCI6MTU4MTQ2MDU4Nn0.mFRchKmKvtRCE_ZkQetlW_iWgpd5F-K3UpGcWJIYT1c"
 }
