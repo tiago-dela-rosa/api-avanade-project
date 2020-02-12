@@ -8,11 +8,10 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require('bcrypt');
 
 //Autenticacao com JWT
-require("./auth/auth");
-
+require("./config/passport").JWTPassport();
 
 // Passport config
-require("./config/passport")(passport);
+require("./config/passport").localPassport(passport);
 
 app.use(cookieParser());
 

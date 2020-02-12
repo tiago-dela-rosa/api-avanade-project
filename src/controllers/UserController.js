@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 
 // Passport config
-require("../config/passport")(passport);
+require("../config/passport").localPassport(passport);
 
 module.exports = {
   register(req, res) {
