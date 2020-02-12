@@ -59,13 +59,13 @@ Aqui estão os usuários do banco.
 
 ## Register
 
- ```http
-  POST /api/register 
+  ```http 
+ POST /api/register
  ```
 
 <details>
 <summary><code>HTTP/1.1 200 OK</code></summary>
-<br>
+
 ```json
 {
   "msg": "Usuário cadastrado com sucesso."
@@ -80,8 +80,8 @@ Aqui estão os usuários do banco.
  ```
 
 <details>
-<summary><code>HTTP/1.1 200 OK'</code></summary>
-<br>
+<summary><code>HTTP/1.1 200 OK</code></summary>
+
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVlNDMxYTY3Zjc3OTNiMjQyODc4MzdiZiIsImVtYWlsIjoidGVzdGVAdGVzdGUuY29tLmJyIn0sImlhdCI6MTU4MTQ2MDU4Nn0.mFRchKmKvtRCE_ZkQetlW_iWgpd5F-K3UpGcWJIYT1c"
