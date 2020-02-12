@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const TransactionsController = require("../controllers/TransactionsController");
+const SearchController = require("../controllers/SearchController")
 
 // Esperase que todas as rotas estejem dentro de /user 
 
@@ -19,6 +20,6 @@ router.post("/:userId/transactions", TransactionsController.store)
 router.get("/:userId/transactions", TransactionsController.getTransactions)
 
 // Seach
-router.get("/:userId/search")
+router.get("/search", SearchController.search)
 
 module.exports = router;

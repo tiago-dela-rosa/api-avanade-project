@@ -26,13 +26,13 @@ module.exports = {
         const _userTarget = await User.findOne({ numberAccount: numberAccount, cpf: cpf })
 
         if(!_userId)
-            return res.status(400).json({ status: "error", message : "User not found" })
+            return res.status(400).json({ status: "error", message : "Usuário não encontrado" })
         
         if(!_userTarget)
-            return res.status(400).json({ status: "error", message : "Please review the account number and cpf" })    
+            return res.status(400).json({ status: "error", message : "Revise o número da conta ou cpf" })    
 
         if(_userId.balance < amountTransferred)
-            return res.status(401).json({ status: "error", message : "You don't have enough balance" })
+            return res.status(401).json({ status: "error", message : "Saldo insuficiente para essa operação" })
         
         // calculando novos saldos    
         const targertNewBalance = _userTarget.balance + amountTransferred;
