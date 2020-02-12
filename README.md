@@ -54,6 +54,9 @@ Aqui estão os usuários do banco.
 | -------- | -------- | -------- | -------- | -------- |
 | POST | `/api/register` | Cadastra um usuário no banco de dados | JSON/email, password, fullName, cpf | JSON/mensagem: Usuário cadastrado com sucesso. |
 | POST | `/api/login` | Inicia a sessão do usuário | JSON/cpf, password | JSON/token de autenticação. |
+| GET | `/user/search` | Faz uma busca na coleção de usuário | filter[cpf], filter[numberAccount] | JSON/id, cpf, email, numberAccount |
+| GET | `/user/:idUser/transactions` | Recupera as transações do usuário | month=1~12 (opcional) | JSON/ transaction[date, cpf, ammount] |
+| POST | `/user/:idUser/transactions` | Realiza uma transação | JSON/ numberAccount, amountTransferred, cpf | JSON/ numberAccount, amountTransferred, cpf | 
 
 # Exemplos
 
@@ -89,3 +92,66 @@ Aqui estão os usuários do banco.
 ```
 </details>
 
+## Search
+
+ ```http 
+ POST /user/search?filter[numberAccount]=<Número da conta do usuário>
+ ```
+ 
+<details>
+<summary><code>HTTP/1.1 200 OK</code></summary>
+
+```json
+{
+  "status": "success",
+  "filterResults": {
+    "id": "<ID único aleatório>",
+    "cpf": "<Número de CPF do usuário>",
+    "email": "<email do usuário>",
+    "numberAccount": "<Número da conta do usuário>"
+  }
+}
+```
+</details>
+
+# Transactions
+
+ ```http 
+ GET /user/:idUser/transactions?month=<Mês representado em número>
+ ```
+ 
+<details>
+<summary><code>HTTP/1.1 200 OK</code></summary>
+
+```json
+{
+  "status": "success",
+  "data": [
+    {
+      "transctionId": "<ID único aleatório>",
+      "transactionDate": "<Data da transação>",
+      "cpfUser": "<CPF do usuário de quem está sendo realizada a transação>",
+      "amountTransferred": <Quantidade transferida>
+    }, ...
+}
+```
+</details>
+
+ ```http 
+ POST /user/:idUser/transactions
+ ```
+ 
+<details>
+<summary><code>HTTP/1.1 200 OK</code></summary>
+
+```json
+{
+  "status": "success",
+  "data": {
+    "numberAccount": "<Número da conta de quem está sendo realizada a transação>",
+    "amountTransferred": <Quantidade transferida>,
+    "cpf": "<CPF do usuário de quem está sendo realizada a transação>"
+  }
+}
+```
+</details>
