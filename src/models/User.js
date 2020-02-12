@@ -1,5 +1,4 @@
 const formatToPrice = require("./utils/formatToPrice");
-
 const mongoose = require("mongoose");
 
 let generateObjectId = function() {
@@ -27,9 +26,9 @@ const UserSchema = new mongoose.Schema({
   },
   balance: {
     type: Number,
-    required: true,
-    get: formatToPrice.getPrice,
-    set: formatToPrice.setPrice
+    required: true
+    // get: formatToPrice.getPrice,
+    // set: formatToPrice.setPrice
   },
   numberAccount: {
     type: String,
@@ -55,9 +54,9 @@ const UserSchema = new mongoose.Schema({
       },
       amountTransferred: {
         type: Number,
-        required: true,
-        get: formatToPrice.getPrice,
-        set: formatToPrice.setPrice
+        required: true
+        // get: formatToPrice.getPrice,
+        // set: formatToPrice.setPrice
       }
     }
   ]
