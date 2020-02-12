@@ -71,12 +71,12 @@ module.exports = {
 
             await session.commitTransaction();
 
-            return res.json({ status: "success", data: req.body });
+            return res.send({ status: "success", data: req.body });
         
         } catch (error) {
 
             await session.abortTransaction();
-            return res.json({ status: "error", message: error.message });
+            return res.status(400).send({ status: "error", message: error.message });
 
         } finally {        
 
@@ -86,5 +86,23 @@ module.exports = {
     },
 
     async getTransactions(req, res) {
+    
+        const { userId } = req.params;
+        let { month } = req.query;
+        const _userId = await User.findById(userId);
+        month = month ? month : new Date().getMonth() + 1;
+        
+        if(month > 12 || month < 0)
+            return res.status(400).send({ status: "error", message : "invalid month" })
+
+        if(!_userId)
+            return res.status(400).send({ status: "error", message : "User not found" })
+        
+        transactionsByMonth = _userId.transactions.filter((item) => {
+            return new Date(item.transactionDate).getMonth() + 1 == month;
+        })
+        
+        return res.send({ status: "success", data : transactionsByMonth })
+
     }
 }

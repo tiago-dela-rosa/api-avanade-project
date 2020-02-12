@@ -16,5 +16,9 @@ router.get("/profile", (req, res, next) => {
 
 // Transactions
 router.post("/:userId/transactions", TransactionsController.store)
+router.get("/:userId/transactions", TransactionsController.getTransactions)
+
+// Seach
+router.get("/:userId/search")
 
 module.exports = router;
