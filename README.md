@@ -131,8 +131,10 @@ Aqui estão os usuários do banco.
       "transctionId": "<ID único aleatório>",
       "transactionDate": "<Data da transação>",
       "cpfUser": "<CPF do usuário de quem está sendo realizada a transação>",
-      "amountTransferred": <Quantidade transferida>
-    }, ...
+      "amountTransferred": "<Quantidade transferida>"
+    },
+    { "..." }
+  ]
 }
 ```
 </details>
@@ -149,7 +151,7 @@ Aqui estão os usuários do banco.
   "status": "success",
   "data": {
     "numberAccount": "<Número da conta de quem está sendo realizada a transação>",
-    "amountTransferred": <Quantidade transferida>,
+    "amountTransferred": "<Quantidade transferida>",
     "cpf": "<CPF do usuário de quem está sendo realizada a transação>"
   }
 }
