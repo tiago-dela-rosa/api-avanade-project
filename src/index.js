@@ -6,6 +6,9 @@ const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
+const cors = require("cors");
+
+app.use(cors());
 
 //Autenticacao com JWT
 require("./config/passport").JWTPassport();

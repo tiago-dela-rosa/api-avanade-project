@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const { checkIfNumberAccountExists } = require("./utils/accountNumber");
+const { Joi } = require("joi");
 
 // Passport config
 require("../config/passport").localPassport(passport);
@@ -23,6 +24,19 @@ module.exports = {
     if (!cpfReq || !password || !fullName || !email) {
       res.status(400).send({ msg: "Por favor preencha todos os campos." });
       return false;
+    }
+
+    //check de senha
+    const joiValidationBody = Joi.object().keys({
+      password: Joi.number()
+        .integer()
+        .length(6)
+    });
+
+    const { error } = Joi.validate(password, joiValidationBody);
+
+    if (error) {
+      res.status(400).send({ msg: "Formato de senha incorreto" });
     }
 
     //Check de CPF
@@ -84,7 +98,14 @@ module.exports = {
         req.login(user, { session: false }, async error => {
           if (error) return next(error);
           //salva id e email no token
-          const body = { _id: user._id, email: user.email };
+          const body = {
+            _id: user._id,
+            email: user.email,
+            fullName: user.fullName,
+            cpf: user.cpf,
+            balance: user.balance,
+            numberAccount: user.numberAccount
+          };
           const token = jwt.sign({ user: body }, "top_secret");
           //Manda o token, id e email de volta na resposta
           return res.json({ token, body });
@@ -95,29 +116,3 @@ module.exports = {
     })(req, res, next);
   }
 };
-
-// function generateAccountNumber() {
-//   let generateRandomNumber = Math.floor(Math.random() * 10000000).toString();
-//   let insertChar =
-//     generateRandomNumber.substring(0, 6) +
-//     "-" +
-//     generateRandomNumber.substring(6);
-
-//   return insertChar;
-// }
-
-// async function checkIfNumberAccountExists(numberAccount) {
-//   try {
-//     let numberExists = await User.findOne({ numberAccount });
-
-//     if (numberExists) {
-//       let generateAccountNumber = generateAccountNumber();
-
-//       checkIfNumberAccountExists(generateAccountNumber);
-//     } else {
-//       return numberExists;
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
