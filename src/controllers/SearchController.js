@@ -1,15 +1,24 @@
 const Joi = require('joi');
 const User = require('../models/User');
+const logger = require('logger');
 
 module.exports = {
     async search(req, res) {
 
         const { filter } = req.query
 
-        if(!filter)
+        if(!filter) {
+            logger.createLogger('development.log').warn('Em SearchController', 'message => Busca sem enviar parametros');
             return res.status(400).send({ status: "error", message: "É necessario passar algum parametro para realizar o filtro, veja a documentação: http:www.google.com"})
+        }
 
         const search = await User.findOne({cpf: filter.cpf, numberAccount : filter.numberAccount })
+        
+        if(!search) {
+            logger.createLogger('development.log').info('Em SearchController', 'message => Busca não encontrou resultados', `data => ${JSON.stringify(filter)}`);
+            return res.send({ status: "success", message: "Busca não retornou resultados", data : [] })
+        }
+        
         const resultSearch = {
             id: search._id,
             cpf: search.cpf,
@@ -18,6 +27,6 @@ module.exports = {
             numberAccount: search.numberAccount     
         }
         
-        res.send({ status: "success", filterResults : resultSearch })
+        return res.send({ status: "success", data : resultSearch })
     }
 }
