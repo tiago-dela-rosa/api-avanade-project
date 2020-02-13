@@ -21,10 +21,9 @@ module.exports = {
         }
 
         const search = await User.findOne({ numberAccount : filter.numberAccount })
-        
         if(!search) {
             logger.createLogger('development.log').info('Em SearchController', 'message => Busca não encontrou resultados', `data => ${JSON.stringify(filter)}`);
-            return res.send({ status: "success", message: "Busca não retornou resultados", data : [] })
+            return res.status(400).send({ status: "error", message: "Busca não retornou resultados" })
         }
         
         const resultSearch = {
