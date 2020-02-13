@@ -1,27 +1,22 @@
-const Joi = require("joi");
-const User = require("../models/User");
-const mongoose = require("mongoose");
 const Joi = require('joi');
 const User = require('../models/User');
 const mongoose = require('mongoose');
 const logger = require('logger');
 
 module.exports = {
-  async store(req, res) {
-    const { userId } = req.params;
-    const { numberAccount, amountTransferred, cpf } = req.body;
+    
+    async store(req, res) {
+        
+        const { userId } = req.params;
+        const { numberAccount, amountTransferred, cpf } = req.body;
+        
+        // Validação do body
+        const validationBody = Joi.object().keys({
+            numberAccount : Joi.string().length(8).required(),
+            amountTransferred : Joi.number().integer().greater(0).less(1000000),
+            cpf: Joi.required()
+        })
 
-    // Validação do body
-    const validationBody = Joi.object().keys({
-      numberAccount: Joi.string()
-        .length(8)
-        .required(),
-      amountTransferred: Joi.number()
-        .integer()
-        .greater(0)
-        .less(1000000),
-      cpf: Joi.required()
-    });
         const { error } = Joi.validate(req.body, validationBody);
         
         if(error) {
@@ -33,7 +28,6 @@ module.exports = {
         const _userId = await User.findById(userId);
         const _userTarget = await User.findOne({ numberAccount: numberAccount, cpf: cpf })
 
-    const { error } = Joi.validate(req.body, validationBody);
         if(!_userId){
             logger.createLogger('development.log').error('Em TransactionsController.store', 'message => Não foi enviado o id do usuário que efetuou a transação');
             return res.status(400).json({ status: "error", message : "Usuário não encontrado" })
@@ -49,71 +43,58 @@ module.exports = {
             return res.status(401).json({ status: "error", message : "Saldo insuficiente para essa operação" })
         }
 
-    if (error)
-      return res.status(400).send({ status: "error", message: error.details });
         // calculando novos saldos    
         const targertNewBalance = _userTarget.balance + amountTransferred;
         const selfNewBalance = _userId.balance - amountTransferred;
 
-    // Validações de usuario e numero de conta
-    const _userId = await User.findById(userId);
-    const _userTarget = await User.findOne({
-      numberAccount: numberAccount,
-      cpf: cpf
-    });
+        // Preparando transaction
+        const session = await mongoose.startSession();
+        session.startTransaction();
 
-    if (!_userId)
-      return res
-        .status(400)
-        .json({ status: "error", message: "Usuário não encontrado" });
+        try {
 
-    if (!_userTarget)
-      return res
-        .status(400)
-        .json({ status: "error", message: "Revise o número da conta ou cpf" });
+            const updateTarget = await User.updateOne(
+                { numberAccount : numberAccount }, 
+                { balance: targertNewBalance },
+                { session }
+            )
+            
+            const updateSelf = await User.updateOne(
+                { _id: _userId._id },
+                { balance: selfNewBalance },
+                { session }
+            )
+            
+            _userId.transactions.push({
+                cpfUser: cpf,
+                amountTransferred: -Math.abs(amountTransferred) 
+            })        
+            
+            _userTarget.transactions.push({
+                cpfUser: cpf,
+                amountTransferred: amountTransferred 
+            })
 
-    if (_userId.balance < amountTransferred)
-      return res.status(401).json({
-        status: "error",
-        message: "Saldo insuficiente para essa operação"
-      });
+            _userId.save({ session });
+            _userTarget.save({ session });
 
-    // calculando novos saldos
-    const targertNewBalance = _userTarget.balance + amountTransferred;
-    const selfNewBalance = _userId.balance - amountTransferred;
+            await session.commitTransaction();
 
-    // Preparando transaction
-    const session = await mongoose.startSession();
-    session.startTransaction();
+            return res.send({ status: "success", data: req.body });
+        
+        } catch (error) {
 
-    try {
-      const updateTarget = await User.updateOne(
-        { numberAccount: numberAccount },
-        { balance: targertNewBalance },
-        { session }
-      );
             logger.createLogger('development.log').error('Em TransactionsController.store', 'message => Erro durante operações no mongoose', `error => ${error}`);
             await session.abortTransaction();
             return res.status(400).send({ status: "error", message: error.message });
 
-      const updateSelf = await User.updateOne(
-        { _id: _userId._id },
-        { balance: selfNewBalance },
-        { session }
-      );
+        } finally {        
 
-      _userId.transactions.push({
-        cpfUser: cpf,
-        amountTransferred: -Math.abs(amountTransferred)
-      });
+            session.endSession();
 
-      _userTarget.transactions.push({
-        cpfUser: cpf,
-        amountTransferred: amountTransferred
-      });
+        }          
+    },
 
-      _userId.save({ session });
-      _userTarget.save({ session });
     async getTransactions(req, res) {
     
         const { userId } = req.params;
@@ -126,7 +107,6 @@ module.exports = {
             return res.status(400).send({ status: "error", message : "invalid month" })
         }
 
-      await session.commitTransaction();
         if(!_userId){
             logger.createLogger('development.log').error('Em TransactionsController.get', 'message => Usuário não encontrado', `id => ${userId}` );
             return res.status(400).send({ status: "error", message : "User not found" })
@@ -138,35 +118,5 @@ module.exports = {
         
         return res.send({ status: "success", data : transactionsByMonth })
 
-      return res.send({ status: "success", data: req.body });
-    } catch (error) {
-      await session.abortTransaction();
-      return res.status(400).send({ status: "error", message: error.message });
-    } finally {
-      session.endSession();
     }
-  },
-
-  async getTransactions(req, res) {
-    const { userId } = req.params;
-    let { month } = req.query;
-    const _userId = await User.findById(userId);
-    month = month ? month : new Date().getMonth() + 1;
-
-    if (month > 12 || month < 0)
-      return res
-        .status(400)
-        .send({ status: "error", message: "invalid month" });
-
-    if (!_userId)
-      return res
-        .status(400)
-        .send({ status: "error", message: "User not found" });
-
-    transactionsByMonth = _userId.transactions.filter(item => {
-      return new Date(item.transactionDate).getMonth() + 1 == month;
-    });
-
-    return res.send({ status: "success", data: transactionsByMonth });
-  }
-};
+}
