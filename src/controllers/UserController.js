@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const { checkIfNumberAccountExists } = require("./utils/accountNumber");
-const { Joi } = require("joi");
+const Joi = require("joi");
 
 // Passport config
 require("../config/passport").localPassport(passport);
@@ -30,10 +30,11 @@ module.exports = {
     const joiValidationBody = Joi.object().keys({
       password: Joi.number()
         .integer()
-        .length(6)
+        .min(6)
+        .max(6) 
     });
 
-    const { error } = Joi.validate(password, joiValidationBody);
+    const { error } = Joi.validate(req.body, joiValidationBody);
 
     if (error) {
       res.status(400).send({ msg: "Formato de senha incorreto" });
