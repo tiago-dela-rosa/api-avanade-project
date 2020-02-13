@@ -53,13 +53,13 @@ module.exports = {
 
         try {
 
-            const updateTarget = await User.updateOne(
+            await User.updateOne(
                 { numberAccount : numberAccount }, 
                 { balance: targertNewBalance },
                 { session }
             )
             
-            const updateSelf = await User.updateOne(
+            await User.updateOne(
                 { _id: _userId._id },
                 { balance: selfNewBalance },
                 { session }
