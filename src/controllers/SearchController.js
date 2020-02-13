@@ -28,11 +28,9 @@ module.exports = {
         }
         
         const resultSearch = {
-            id: search._id,
             cpf: search.cpf,
-            email: search.email,
             fullName: search.fullName,
-            numberAccount: search.numberAccount     
+            numberAccount: search.numberAccount    
         }
         
         return res.send({ status: "success", data : resultSearch })
