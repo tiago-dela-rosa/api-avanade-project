@@ -33,6 +33,6 @@ module.exports = {
             numberAccount: search.numberAccount    
         }
         
-        return res.send({ status: "success", data : resultSearch })
+        return res.send({ data : resultSearch })
     }
 }

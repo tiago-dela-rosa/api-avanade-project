@@ -4,7 +4,8 @@
   "description": "API para o projeto proposto pela Avanade.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon babel-node src/index.js"
+    "start": "nodemon babel-node src/index.js",
+    "seed" : "node src/seed/User.seed.js"
   },
   "repository": {
     "type": "git",
