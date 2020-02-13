@@ -20,7 +20,7 @@ module.exports = {
             return res.status(400).send({ status: "error", message: "É necessario passar algum parametro para realizar o filtro, veja a documentação: http:www.google.com"})
         }
 
-        const search = await User.findOne({cpf: filter.cpf, numberAccount : filter.numberAccount })
+        const search = await User.findOne({ numberAccount : filter.numberAccount })
         
         if(!search) {
             logger.createLogger('development.log').info('Em SearchController', 'message => Busca não encontrou resultados', `data => ${JSON.stringify(filter)}`);
