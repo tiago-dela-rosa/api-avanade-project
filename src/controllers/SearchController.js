@@ -31,7 +31,7 @@ module.exports = {
             id: search._id,
             cpf: search.cpf,
             email: search.email,
-            fullname: search.fullname,
+            fullName: search.fullName,
             numberAccount: search.numberAccount     
         }
         
