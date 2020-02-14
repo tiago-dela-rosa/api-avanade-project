@@ -17,9 +17,13 @@ module.exports = {
   async register(req, res) {
     const { password, fullName, email } = req.body;
 
-    const cpfReq = req.body.cpf;
+    let balance = 0.0;
 
-    const balance = 0.0;
+    if (req.body.balance) {
+      balance = req.body.balance;
+    }
+
+    const cpfReq = req.body.cpf;
 
     let numberAccount = await checkIfNumberAccountExists();
 

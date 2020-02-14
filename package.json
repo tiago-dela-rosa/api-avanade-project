@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "seed": "node src/seed/User.seed.js"
+    "seed": "node src/seed/User.seed.js",
+    "dev": "nodemon src/index.js --logevel=error"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "homepage": "https://github.com/tiago-dela-rosa/api-avanade-project#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.0",
+    "axios": "^0.19.2",
     "bcrypt": "^3.0.8",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
