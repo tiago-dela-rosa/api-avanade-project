@@ -75,8 +75,8 @@ module.exports = {
                 amountTransferred: amountTransferred 
             })
 
-            _userId.save({ session });
-            _userTarget.save({ session });
+            await _userId.save({ session });
+            await _userTarget.save({ session });
 
             await session.commitTransaction();
 
