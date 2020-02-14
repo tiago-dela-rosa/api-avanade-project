@@ -30,18 +30,18 @@ module.exports = {
     }
 
     //check de senha
-    const joiValidationBody = Joi.object().keys({
-      password: Joi.number()
-        .integer()
-        .min(6)
-        .max(6)
-    });
+    // const joiValidationBody = Joi.object().keys({
+    //   password: Joi.number()
+    //     .integer()
+    //     .min(6)
+    //     .max(6)
+    // });
 
-    const { error } = Joi.validate(req.body, joiValidationBody);
+    // const { error } = Joi.validate(req.body, joiValidationBody);
 
-    if (error) {
-      res.status(400).send({ msg: "Formato de senha incorreto" });
-    }
+    // if (error) {
+    //   res.status(400).send({ msg: "Formato de senha incorreto" });
+    // }
 
     //Check de CPF
     if (!cpf.isValid(cpfReq)) {

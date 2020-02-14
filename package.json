@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon babel-node src/index.js",
-    "seed" : "node src/seed/User.seed.js"
+    "seed": "node src/seed/User.seed.js"
   },
   "repository": {
     "type": "git",

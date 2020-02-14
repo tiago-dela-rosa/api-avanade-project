@@ -15,8 +15,6 @@ app.use(cors());
 const dotenv = require("dotenv");
 dotenv.config();
 
-console.log(process.env.JWT_SECRET);
-
 //Autenticacao com JWT
 require("./config/passport").JWTPassport();
 
