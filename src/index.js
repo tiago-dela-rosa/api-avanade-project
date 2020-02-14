@@ -46,7 +46,7 @@ const secureRoute = require("./routes/secure-routes");
 app.use("/user", passport.authenticate("jwt", { session: false }), secureRoute);
 
 mongoose
-  .connect("mongodb://localhost:27017/bitbank", {
+  .connect(process.env.DB_CONNECT, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
