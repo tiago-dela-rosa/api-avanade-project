@@ -80,7 +80,7 @@ module.exports = {
 
             await session.commitTransaction();
 
-            return res.status(200).send({ status: "success", data: req.body });
+            return res.status(200).send({ status: "successo", data: Object.assign({ newBalance: selfNewBalance }, req.body) });
         
         } catch (error) {
 
