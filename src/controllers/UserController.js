@@ -5,12 +5,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const { checkIfNumberAccountExists } = require("./utils/accountNumber");
-//const { Joi } = require("joi");
+const { Joi } = require("joi");
 
 const dotenv = require("dotenv");
 dotenv.config();
-
-console.log(process.env.JWT_SECRET);
 
 // Passport config
 require("../config/passport").localPassport(passport);
@@ -32,17 +30,18 @@ module.exports = {
     }
 
     //check de senha
-    // const joiValidationBody = Joi.object().keys({
-    //   password: Joi.number()
-    //     .integer()
-    //     .length(6)
-    // });
+    const joiValidationBody = Joi.object().keys({
+      password: Joi.number()
+        .integer()
+        .min(6)
+        .max(6)
+    });
 
-    // const { error } = Joi.validate(password, joiValidationBody);
+    const { error } = Joi.validate(req.body, joiValidationBody);
 
-    // if (error) {
-    //   res.status(400).send({ msg: "Formato de senha incorreto" });
-    // }
+    if (error) {
+      res.status(400).send({ msg: "Formato de senha incorreto" });
+    }
 
     //Check de CPF
     if (!cpf.isValid(cpfReq)) {
