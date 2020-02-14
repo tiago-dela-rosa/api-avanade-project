@@ -56,4 +56,4 @@ mongoose
     console.log("Erro na conexão ao banco de dados : " + err.message);
   });
 
-app.listen(3000);
+app.listen(process.env.PORT);
