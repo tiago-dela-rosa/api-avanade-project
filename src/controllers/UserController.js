@@ -27,25 +27,20 @@ module.exports = {
 
     let numberAccount = await checkIfNumberAccountExists();
 
+    let regexNumbers = /^[0-9]+$/;
+
+    //check de senha
+    if (password.length !== 6 || !password.match(regexNumbers)) {
+      res.status(400).send({
+        msg: "A senha deve conter apenas números e deve possuir seis dígitos."
+      });
+    }
+
     // Check para verificar se todos os campos foram preenchidos
     if (!cpfReq || !password || !fullName || !email) {
       res.status(400).send({ msg: "Por favor preencha todos os campos." });
       return false;
     }
-
-    //check de senha
-    // const joiValidationBody = Joi.object().keys({
-    //   password: Joi.number()
-    //     .integer()
-    //     .min(6)
-    //     .max(6)
-    // });
-
-    // const { error } = Joi.validate(req.body, joiValidationBody);
-
-    // if (error) {
-    //   res.status(400).send({ msg: "Formato de senha incorreto" });
-    // }
 
     //Check de CPF
     if (!cpf.isValid(cpfReq)) {
