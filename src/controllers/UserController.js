@@ -5,7 +5,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const { checkIfNumberAccountExists } = require("./utils/accountNumber");
-const Joi = require("joi");
+const { Joi } = require("joi");
+
+const dotenv = require("dotenv");
+dotenv.config();
 
 // Passport config
 require("../config/passport").localPassport(passport);
@@ -27,18 +30,18 @@ module.exports = {
     }
 
     //check de senha
-    const joiValidationBody = Joi.object().keys({
-      password: Joi.number()
-        .integer()
-        .min(6)
-        .max(6) 
-    });
+    // const joiValidationBody = Joi.object().keys({
+    //   password: Joi.number()
+    //     .integer()
+    //     .min(6)
+    //     .max(6)
+    // });
 
-    const { error } = Joi.validate(req.body, joiValidationBody);
+    // const { error } = Joi.validate(req.body, joiValidationBody);
 
-    if (error) {
-      res.status(400).send({ msg: "Formato de senha incorreto" });
-    }
+    // if (error) {
+    //   res.status(400).send({ msg: "Formato de senha incorreto" });
+    // }
 
     //Check de CPF
     if (!cpf.isValid(cpfReq)) {
@@ -107,7 +110,7 @@ module.exports = {
             balance: user.balance,
             numberAccount: user.numberAccount
           };
-          const token = jwt.sign({ user: body }, "top_secret");
+          const token = jwt.sign({ user: body }, process.env.JWT_SECRET);
           //Manda o token, id e email de volta na resposta
           return res.json({ token, body });
         });
