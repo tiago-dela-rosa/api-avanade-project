@@ -30,17 +30,17 @@ module.exports = {
 
         if(!_userId){
             logger.createLogger('development.log').error('Em TransactionsController.store', 'message => Não foi enviado o id do usuário que efetuou a transação');
-            return res.status(400).json({ status: "error", message : "Usuário não encontrado" })
+            return res.status(400).send({ status: "error", message : "Usuário não encontrado" })
         }
         
         if(!_userTarget){
-            logger.createLogger('development.log').error('Em TransactionsController.store', 'message => Transação com Cpf ou Número da conta incorretos', `data => ${JSON.stringfy(req.body)}`);
-            return res.status(400).json({ status: "error", message : "Revise o número da conta ou cpf" })    
+            logger.createLogger('development.log').error('Em TransactionsController.store', 'message => Transação com Cpf ou Número da conta incorretos');
+            return res.status(400).send({ status: "error", message : "Revise o número da conta ou cpf" })    
         }
         
         if(_userId.balance < amountTransferred){
             logger.createLogger('development.log').warn('Em TransactionsController.store', 'message => Transação com saldo insuficiente', `saldo => ${_userId.balance}`, `quantidade transferida => ${amountTransferred}`);
-            return res.status(401).json({ status: "error", message : "Saldo insuficiente para essa operação" })
+            return res.status(400).send({ status: "error", message : "Saldo insuficiente para essa operação" })
         }
 
         // calculando novos saldos    
@@ -80,7 +80,7 @@ module.exports = {
 
             await session.commitTransaction();
 
-            return res.send({ status: "success", data: req.body });
+            return res.status(200).send({ status: "success", data: req.body });
         
         } catch (error) {
 
