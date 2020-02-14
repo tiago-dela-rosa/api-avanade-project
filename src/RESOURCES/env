@@ -1,0 +1,4 @@
+DB_CONNECT = "mongodb+srv://tiago_lopes:tiago123456@cluster0-7s16h.mongodb.net/bitbank"
+SESSION_SECRET = "d41d8cd98f00b204e9800998ecf8427e"
+JWT_SECRET = "cfd61b8a7397fa7c10b2ae548f5bfaef"
+PORT = "3000"

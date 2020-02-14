@@ -21,26 +21,23 @@ const objTemplate = () => {
     "natalia@gmail.com"
   ];
 
+  const balance = 100000;
+
   return names.map((user, index) => {
     return {
       fullName: names[index],
       email: emails[index],
       cpf: cpfs[index],
       password: pass,
-      balance: 10000
+      balance: balance
     };
   });
 };
 
 const register = () => {
   const rows = objTemplate();
-  return rows.map(async function(row, error) {
-    try {
-      console.log(await axios.post("http://localhost:3000/api/register", row));
-      await axios.post("http://localhost:3000/api/register", row);
-    } catch (error) {
-      console.log(error);
-    }
+  return rows.map(row => {
+    axios.post("http://localhost:3000/api/register", row);
   });
 };
 
