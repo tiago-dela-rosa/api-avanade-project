@@ -13,7 +13,7 @@ module.exports = {
         // Validação do body
         const validationBody = Joi.object().keys({
             numberAccount : Joi.string().length(8).required(),
-            amountTransferred : Joi.number().integer().greater(0).less(1000000),
+            amountTransferred : Joi.number().integer().greater(1000).less(10000000),
             cpf: Joi.required()
         })
 
