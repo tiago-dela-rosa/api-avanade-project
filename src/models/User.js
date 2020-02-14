@@ -57,6 +57,10 @@ const UserSchema = new mongoose.Schema({
         required: true
         // get: formatToPrice.getPrice,
         // set: formatToPrice.setPrice
+      },
+      identifier : {
+        type: String,
+        require: false
       }
     }
   ]

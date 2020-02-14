@@ -8,13 +8,14 @@ module.exports = {
     async store(req, res) {
         
         const { userId } = req.params;
-        const { numberAccount, amountTransferred, cpf } = req.body;
+        const { numberAccount, amountTransferred, cpf , identifier } = req.body;
         
         // Validação do body
         const validationBody = Joi.object().keys({
             numberAccount : Joi.string().length(8).required(),
-            amountTransferred : Joi.number().integer().greater(1000).less(10000000),
-            cpf: Joi.required()
+            amountTransferred : Joi.number().integer().greater(9999).less(10000001),
+            cpf: Joi.required(),
+            identifier: Joi.string().optional()
         })
 
         const { error } = Joi.validate(req.body, validationBody);
@@ -67,11 +68,13 @@ module.exports = {
             
             _userId.transactions.push({
                 cpfUser: cpf,
+                identifier: identifier,
                 amountTransferred: -Math.abs(amountTransferred) 
             })        
             
             _userTarget.transactions.push({
                 cpfUser: cpf,
+                identifier: identifier,
                 amountTransferred: amountTransferred 
             })
 
@@ -80,7 +83,7 @@ module.exports = {
 
             await session.commitTransaction();
 
-            return res.status(200).send({ status: "successo", data: Object.assign({ newBalance: selfNewBalance }, req.body) });
+            return res.status(200).send({ status: "success", data: Object.assign({ newBalance: selfNewBalance }, req.body) });
         
         } catch (error) {
 
@@ -116,7 +119,7 @@ module.exports = {
             return new Date(item.transactionDate).getMonth() + 1 == month;
         })
         
-        return res.send({ status: "success", data : transactionsByMonth })
+        return res.send(transactionsByMonth)
 
     }
 }
